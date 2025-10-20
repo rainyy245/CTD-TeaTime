@@ -1,42 +1,59 @@
 import streamlit as st
-import ngrok as ng
+import time
 
-st.title(" Payment Page")
+st.set_page_config(page_title="Card Payment", page_icon="💳", layout="centered")
 
+st.title("💳 Card Payment")
 
-col1, space_col, col2= st.columns([1,0.1,1])
-with col1:
-    st.image("C:/Users/rainy/Desktop/CTD Project/CTD-TeaTime/Images/Credit.png", width=150)
-with space_col:
-    pass
-with col2:
-    st.image("C:/Users/rainy/Desktop/CTD Project/CTD-TeaTime/Images/QR.png", width=170)
-
-col3, col4= st.columns(2)
-with col3:
-    if st.button("Card payment"):
-        st.switch_page("pages/2.4 Proccess.py")
-with col4:
-    if st.button("QR payment"):
-        st.switch_page("pages/2.3.1 QR code.py")
-
-st.markdown("""
-<style>
-    .main {
-        padding: 2rem;
-    }
-    .stButton>button {
-        width: 100%;
-        background-color: #FF6B6B;
-        color: white;
-        font-weight: bold;
-        padding: 0.75rem;
-        border-radius: 10px;
-        border: none;
-        font-size: 1.1rem;
-    }
-    .stButton>button:hover {
-        background-color: #FF5252;
-    }
-            </style>
-""", unsafe_allow_html=True)
+if 'final_order' not in st.session_state:
+    st.error("No order found. Please go back to cart.")
+    if st.button("⬅️ Back to Cart"):
+        st.switch_page("pages/2.2 Cart.py")
+else:
+    order = st.session_state.final_order
+    
+    # Display order summary
+    st.subheader("Order Summary")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.write(f"**Number of items:** {len(order['items'])}")
+        st.write(f"**Subtotal:** ${order['subtotal']:.2f}")
+        
+        if order['discount_details']:
+            st.write("**Applied Discount:**")
+            for detail in order['discount_details']:
+                st.write(f"• {detail}")
+        else:
+            st.write("**Discount:** None")
+    
+    with col2:
+        st.success(f"**Final Total: ${order['final_total']:.2f}**")
+    
+    st.markdown("---")
+    
+    # Payment processing section
+    st.subheader("Payment Processing")
+    
+    if st.button("💳 Process Payment with Linked Card", type="primary"):
+        # Create a placeholder for the processing message
+        processing_placeholder = st.empty()
+        
+        # Show processing message for 5 seconds
+        with processing_placeholder.container():
+            st.info("💳 **Processing payment with linked card...**")
+            progress_bar = st.progress(0)
+            
+            time.sleep(5)
+        
+        # Clear the processing message
+        processing_placeholder.empty()
+        
+        # Show success message
+        st.balloons()
+        st.success("🎉 Payment Successful! Thank you for your order!")
+        
+        st.session_state.cart = []
+    
+    if st.button("⬅️ Back to Cart"):
+        st.switch_page("pages/2.2 Cart.py")
