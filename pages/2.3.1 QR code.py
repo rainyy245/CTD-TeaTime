@@ -56,5 +56,5 @@ else:
         
         st.session_state.cart = []
     
-    if st.button("⬅️ Back to Cart"):
-        st.switch_page("pages/2.2 Cart.py")
+    if st.button("⬅️ Back to Home"):
+        st.switch_page("home.py")

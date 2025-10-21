@@ -1,5 +1,7 @@
 import streamlit as st
 
+
+
 st.set_page_config(page_title="Customize Your Drink", page_icon="☕", layout="wide")
 
 if 'cart' not in st.session_state: 
@@ -27,15 +29,16 @@ else:
 
     # Toppings data
     toppings = [
-        {"name": "Pearl", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/feb1a05c-547e-42a8-b293-2cda95c33050/Topping_Pearls+%28Boba%29.png?format=1000w", "desc": ""},
-        {"name": "Honey Jelly", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/1e91bb32-9e6d-4e00-a7cf-28eaae4bee93/Topping_HoneyJelly.png?format=1000w", "desc": ""},
-        {"name": "Lychee Jelly", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/fc64125a-bc3e-476e-a0b6-4d48757b1d77/Topping_LycheeJelly+%281%29.png?format=1000w", "desc": ""},
-        {"name": "Strawberry Boba", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/8d9305b6-65bb-4fcd-8ac3-0368c22cdaf7/Topping_StrawberryPoppingBoba.png?format=1000w", "desc": ""},
-        {"name": "Mango Boba", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/8da7f0f0-1587-47f9-a573-46f997b2883f/Topping_MangoPoppingBoba.png?format=1000w", "desc": ""},
-        {"name": "Cream", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/c9746d52-a8ab-4ecb-9c62-46c4e7d45b34/Topping_Creama.png?format=1000w", "desc": ""},
-        {"name": "Ice Cream", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/ee270494-a5e6-4080-96ae-3e21cccfa0d6/Topping_IceCream.png?format=1000w", "desc": ""},
+        {"name": "Pearl", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/feb1a05c-547e-42a8-b293-2cda95c33050/Topping_Pearls+%28Boba%29.png?format=1000w", "desc": "Standard boba"},
+        {"name": "Honey Jelly", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/1e91bb32-9e6d-4e00-a7cf-28eaae4bee93/Topping_HoneyJelly.png?format=1000w", "desc": "Sweet boba with a taste of honey"},
+        {"name": "Lychee Jelly", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/fc64125a-bc3e-476e-a0b6-4d48757b1d77/Topping_LycheeJelly+%281%29.png?format=1000w", "desc": "Tropical taste"},
+        {"name": "Strawberry Boba", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/8d9305b6-65bb-4fcd-8ac3-0368c22cdaf7/Topping_StrawberryPoppingBoba.png?format=1000w", "desc": "Sour and sweet pink boba"},
+        {"name": "Mango Boba", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/8da7f0f0-1587-47f9-a573-46f997b2883f/Topping_MangoPoppingBoba.png?format=1000w", "desc": "Seasonal boba"},
+        {"name": "Cream", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/c9746d52-a8ab-4ecb-9c62-46c4e7d45b34/Topping_Creama.png?format=1000w", "desc": "Cheesy salt and sweet cream"},
+        {"name": "Ice Cream", "price": 0.75, "emoji": "https://images.squarespace-cdn.com/content/v1/61e8bb2a2cf8670534839093/ee270494-a5e6-4080-96ae-3e21cccfa0d6/Topping_IceCream.png?format=1000w", "desc": "Fresh vanilla"},
     ]
 
+    # base price for each drink of medium size
     base_price = 5.00
 
     # Size Selection
@@ -55,7 +58,6 @@ else:
     st.markdown("---")
 
     # Quantity Selection
-    # Quantity Selection
     st.markdown("## 🔢 Select Quantity")
     quantity = st.number_input(
         "How many drinks would you like?",
@@ -63,10 +65,8 @@ else:
         max_value=10,
         value=1,
         step=1,
-        key="customize_quantity"  # Уникальный ключ для этого виджета
+        key="customize_quantity"  # Key for the widget
     )
-
-    st.markdown("---")
     
     st.markdown("---")
 
@@ -78,22 +78,15 @@ else:
     cols_per_row = 2
     selected_toppings = []
 
-    # make sure you understanf this part, it may be hard
-    for i in range(0, len(toppings), cols_per_row):
-        cols = st.columns(cols_per_row)
-        for j, col in enumerate(cols):
-            if i + j < len(toppings):
-                topping = toppings[i + j]
-                with col:
-                    with st.container():
-                        st.image(topping['emoji'], width=198) 
-                        st.markdown(f"**{topping['name']}**")
-                        # we shouldn't use css or html
-                        # st.markdown(f"<div style='font-size: 0.85rem; color: #666;'>{topping['desc']}</div>", unsafe_allow_html=True)
-                        # st.markdown(f"<div class='price-tag' style='margin-top: 0.5rem;'>${topping['price']:.2f}</div>", unsafe_allow_html=True)
-
-                    if st.checkbox(f"Add {topping['name']}", key=f"topping_{i+j}"):
-                        selected_toppings.append(topping)
+    # Placing the toppings elements on the screen (one column)
+    for topping in toppings:
+        st.image(topping['emoji'], width=198)
+        st.write(f"**{topping['name']}**")
+        st.write(topping['desc'])
+        st.write(f"Price: ${topping['price']:.2f}")
+        
+        if st.checkbox(f"Add {topping['name']}", key=topping['name']):
+            selected_toppings.append(topping)
 
     st.markdown("---")
 
@@ -158,31 +151,6 @@ else:
         st.write(f"**Price per item: ${total_price_per_item:.2f}**")
         st.success(f"**Total: ${total_price:.2f}**")
 
-        #I have written just the same but without css and html, cuz they are harder and prohibited!
-
-        # with col1:
-        #     st.markdown(f"""
-        #     <div class="order-summary">
-        #         <h4>Your Order:</h4>
-        #         <p><strong>Coffee:</strong> {st.session_state.selected_coffee} - ${base_price:.2f}</p>
-        #     """, unsafe_allow_html=True)
-
-        #     if selected_toppings:
-        #         st.markdown("<p><strong>Toppings:</strong></p>", unsafe_allow_html=True)
-        #         for topping in selected_toppings:
-        #             st.markdown(f"<p style='margin-left: 1rem;'>• {topping['name']} - ${topping['price']:.2f}</p>", unsafe_allow_html=True)
-        #     else:
-        #         st.markdown("<p><strong>Toppings:</strong> None selected</p>", unsafe_allow_html=True)
-
-        #     st.markdown(f"""
-        #         <p><strong>Ice Level:</strong> {ice_level}</p>
-        #         <p><strong>Sugar Level:</strong> {sugar_level}</p>
-        #         <p><strong>Milk Type:</strong> {milk_type}</p>
-        #         <hr>
-        #         <h3 style="color: #2196F3;">Total: ${total_price:.2f}</h3>
-        #     </div>
-        #     """, unsafe_allow_html=True)
-
     with col2:
         if st.button("🛒 Add to Cart", type="primary"):
             # Add multiple items to cart based on quantity
@@ -200,11 +168,6 @@ else:
             
             st.success(f"✅ Added {quantity} item(s) to cart successfully!")
             st.balloons()
-
-            # I don't think we need this button here, it is already at the top of the page
-            # st.markdown("### ")
-            # if st.button("⬅️ Back to Menu"):
-            #     st.switch_page("pages/1_menu.py")
         
     # Display cart count in sidebar
     if st.session_state.cart:
@@ -214,46 +177,3 @@ else:
             st.sidebar.markdown("### Your Cart:")
             for idx, item in enumerate(st.session_state.cart, 1):
                 st.sidebar.markdown(f"**{idx}. {item['drink']}** - ${item['price']:.2f}")
-    
-
-
-    # Custom CSS for styling
-    #st.markdown(multiline string, unsafe_allow_html=True)
-    # st.markdown("""
-    # <style>
-    #     .main {
-    #         padding: 2rem;
-    #     }
-    #     .stButton>button {
-    #         width: 100%;
-    #         background-color: #FF6B6B;
-    #         color: white;
-    #         font-weight: bold;
-    #         padding: 0.75rem;
-    #         border-radius: 10px;
-    #         border: none;
-    #         font-size: 1.1rem;
-    #     }
-    #     .stButton>button:hover {
-    #         background-color: #FF5252;
-    #     }
-    #     .topping-card {
-    #         background-color: #f8f9fa;
-    #         padding: 1rem;
-    #         border-radius: 10px;
-    #         text-align: center;
-    #         border: 2px solid #e9ecef;
-    #         margin-bottom: 1rem;
-    #     }
-    #     .price-tag {
-    #         color: #28a745;
-    #         font-weight: bold;
-    #     }
-    #     .order-summary {
-    #         background-color: #011729;
-    #         padding: 1.5rem;
-    #         border-radius: 10px;
-    #         border-left: 5px solid #2196F3;
-    #     }
-    # </style>
-    # """, unsafe_allow_html=True)
